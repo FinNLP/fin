@@ -1,0 +1,29 @@
+{
+  "name": "langr",
+  "version": "1.0.0",
+  "description": "Natrual language processing in JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexcorvi/langr.git"
+  },
+  "keywords": [
+    "natural",
+    "language",
+    "processing"
+  ],
+  "author": "Alex Corvi <alex@arrayy.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alexcorvi/langr/issues"
+  },
+  "homepage": "https://github.com/alexcorvi/langr#readme",
+  "dependencies": {
+    "en-parse": "^1.0.0",
+    "en-pos": "^1.0.0",
+    "lexed": "^1.0.1"
+  }
+}
