@@ -38,12 +38,12 @@ fin.extend = function(detector){
 	if(Array.isArray(detector)) detector.forEach((single)=>add(single));
 	else add(detector);
 	function add(detector){
-		if(typeof detector === "object" && detector !== null && detector.id && detector.detector) langr.prototype[detector.id] = detector.detector;
-		else console.warn("LANGR: The detector you're trying to add is invalid.");
+		if(typeof detector === "object" && detector !== null && detector.id && detector.detector) fin.prototype[detector.id] = detector.detector;
+		else console.warn("FIN: The detector you're trying to add is invalid.");
 	}
 };
 
-module.exports = langr;// solve contractions
+// solve contractions
 // a necessary step for the dependency parser
 var contractions = ["'m",	"'s",	"'d",	"'ll",	"'re",	"'ve"];
 var replacements = ["am",	"is",	"would","will",	"are",	"have"];
