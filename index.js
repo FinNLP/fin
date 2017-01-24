@@ -15,7 +15,7 @@ var fin = function(input){
 	var parseReulst = lexResult.map((sentence,i)=>parser(tagResult[i].tags,uncontract(sentence.tokens)));
 	this.input = input;
 	this.sentences = lexResult.map(sentence=>sentence.raw);
-	this.output = lexResult.map((sentence,index)=>{
+	this.result = lexResult.map((sentence,index)=>{
 		return {
 			raw:this.sentences[index],
 			tokens:lexResult[index].tokens,
