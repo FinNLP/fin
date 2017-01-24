@@ -7,7 +7,7 @@ const parser = require('en-parse');
 var langr = function(input){
 	var lexResult = lexer(input);
 	var tagResult = lexResult.map(sentence=>tagger(sentence.tokens,sentence.meta));
-	var parseReulst = lexResult.map((sentence,i)=>parser(tagResult[i].tags,sentence.tokens));
+	var parseReulst = lexResult.map((sentence,i)=>parser(tagResult[i].tags,uncontract(sentence.tokens)));
 	this.input = input;
 	this.sentences = lexResult.map(sentence=>sentence.raw);
 	this.output = lexResult.map((sentence,index)=>{
@@ -32,4 +32,16 @@ langr.extend = function(detector){
 	}
 };
 
-module.exports = langr;
+module.exports = langr;// solve contractions
+// a necessary step for the dependency parser
+var contractions = ["'m",	"'s",	"'d",	"'ll",	"'re",	"'ve"];
+var replacements = ["am",	"is",	"would","will",	"are",	"have"];
+function uncontract (arr){
+	return arr.map((x)=>{
+		var ci = contractions.indexOf(x);
+		if(~ci) return replacements[ci];
+		else return x;
+	});
+}
+
+module.exports = fin;
