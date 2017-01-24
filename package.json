@@ -1,5 +1,5 @@
 {
-  "name": "langr",
+  "name": "fin",
   "version": "1.0.0",
   "description": "Natrual language processing in JavaScript",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/alexcorvi/langr.git"
+    "url": "git+https://github.com/finnlp/fin.git"
   },
   "keywords": [
     "natural",
@@ -18,9 +18,9 @@
   "author": "Alex Corvi <alex@arrayy.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/alexcorvi/langr/issues"
+    "url": "https://github.com/finnlp/fin/issues"
   },
-  "homepage": "https://github.com/alexcorvi/langr#readme",
+  "homepage": "https://github.com/alexcorvi/fin",
   "dependencies": {
     "en-parse": "^1.0.0",
     "en-pos": "^1.0.0",
