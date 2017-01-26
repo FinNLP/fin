@@ -1,5 +1,5 @@
 {
-  "name": "fin",
+  "name": "finjs",
   "version": "1.0.3",
   "description": "Natrual language processing in JavaScript",
   "main": "index.js",
