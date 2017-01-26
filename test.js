@@ -40,7 +40,10 @@ describe('Extensibility', function () {
 	describe('interceptors', function () {
 		it('intercept', function () {
 			var sentence = "something";
-			fin.intercept((str)=>str+" something else");
+			fin.extend({
+				id:"interceptor",
+				extension:(str)=>str+" something else"
+			});
 			var instance = new fin(sentence);
 			assert.equal(instance.result[0].tokens.length,3);
 		});
@@ -51,7 +54,7 @@ describe('Extensibility', function () {
 		it('Single extension', function () {
 			fin.extend({
 				id:"len",
-				detector:function(){
+				extension:function(){
 					return this.sentences.length;
 				}
 			});
@@ -62,13 +65,13 @@ describe('Extensibility', function () {
 			fin.extend([
 				{
 					id:"a",
-					detector:function(){
+					extension:function(){
 						return this.sentences.length;
 					}
 				},
 				{
 					id:"b",
-					detector:function(){
+					extension:function(){
 						return this.sentences.length;
 					}
 				}
@@ -76,6 +79,16 @@ describe('Extensibility', function () {
 			var instance = new fin(input);
 			assert.equal(instance.a(),3);
 			assert.equal(instance.b(),3);
+		});
+		it('Extending the lexicon', function () {
+			fin.extend({
+				id:"lexicon",
+				extension:{
+					"abcdefgh":"PR"
+				}
+			});
+			var instance = new fin("abcdefgh");
+			console.log(instance);
 		});
 	});
 });
