@@ -1,18 +1,16 @@
 const lexed = require('lexed');
 lexed.english();
-const lexer = lexed.lexer;
 const tagger = require('en-pos');
 const parser = require('en-parse');
-
-var interceptors = [];
-
-var fin = function(input){
+const lexicon = require('en-lexicon');
+const interceptors = [];
+const fin = function(input){
 	// process interceptions
 	interceptors.forEach(f=>input=f(input));
 	// lex, tag then parse ..
-	var lexResult = lexer(input);
-	var tagResult = lexResult.map(sentence=>tagger(sentence.tokens,sentence.meta));
-	var parseReulst = lexResult.map((sentence,i)=>parser(tagResult[i].tags,uncontract(sentence.tokens)));
+	const lexResult = lexed.lexer(input);
+	const tagResult = lexResult.map(sentence=>tagger(sentence.tokens,sentence.meta));
+	const parseReulst = lexResult.map((sentence,i)=>parser(tagResult[i].tags,uncontract(sentence.tokens)));
 	this.input = input;
 	this.sentences = lexResult.map(sentence=>sentence.raw);
 	this.result = lexResult.map((sentence,index)=>{
@@ -28,25 +26,25 @@ var fin = function(input){
 	return this;
 };
 
-
-fin.intercept = function(f){
-	if(typeof f !== "function") console.warn("FIN: An interceptor must be a function");
-	else interceptors.push(f);
-};
-
-fin.extend = function(detector){
-	if(Array.isArray(detector)) detector.forEach((single)=>add(single));
-	else add(detector);
-	function add(detector){
-		if(typeof detector === "object" && detector !== null && detector.id && detector.detector) fin.prototype[detector.id] = detector.detector;
-		else console.warn("FIN: The detector you're trying to add is invalid.");
+fin.extend = function(extension){
+	if(Array.isArray(extension)) extension.forEach((single)=>add(single));
+	else add(extension);
+	function add(extension){
+		if(typeof extension === "object" && extension !== null && extension.id && extension.extension) {
+			if(extension.id === "lexer-transformer") lexed.extend.transformer(extension.extension);
+			else if(extension.id === "lexer-abbreviations") lexed.extend.abbreviations(extension.extension);
+			else if(extension.id === "lexicon") lexicon.extend(extension);
+			else if(extension.id === "interceptor") interceptors.push(extension.extension);
+			else fin.prototype[extension.id] = extension.extension;
+		}
+		else console.warn("FIN: The extension you're trying to add is invalid.");
 	}
 };
 
 // solve contractions
 // a necessary step for the dependency parser
-var contractions = ["'m",	"'s",	"'d",	"'ll",	"'re",	"'ve"];
-var replacements = ["am",	"is",	"would","will",	"are",	"have"];
+const contractions = ["'m",	"'s",	"'d",	"'ll",	"'re",	"'ve"];
+const replacements = ["am",	"is",	"would","will",	"are",	"have"];
 function uncontract (arr){
 	return arr.map((x)=>{
 		var ci = contractions.indexOf(x);
