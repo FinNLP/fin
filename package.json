@@ -1,6 +1,6 @@
 {
   "name": "fin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Natrual language processing in JavaScript",
   "main": "index.js",
   "scripts": {
