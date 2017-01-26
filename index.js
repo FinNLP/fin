@@ -33,7 +33,7 @@ fin.extend = function(extension){
 		if(typeof extension === "object" && extension !== null && extension.id && extension.extension) {
 			if(extension.id === "lexer-transformer") lexed.extend.transformer(extension.extension);
 			else if(extension.id === "lexer-abbreviations") lexed.extend.abbreviations(extension.extension);
-			else if(extension.id === "lexicon") lexicon.extend(extension);
+			else if(extension.id === "lexicon") lexicon.extend(extension.extension);
 			else if(extension.id === "interceptor") interceptors.push(extension.extension);
 			else fin.prototype[extension.id] = extension.extension;
 		}

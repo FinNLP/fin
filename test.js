@@ -88,7 +88,7 @@ describe('Extensibility', function () {
 				}
 			});
 			var instance = new fin("abcdefgh");
-			console.log(instance);
+			assert.equal(instance.result[0].tags[0],"PR");
 		});
 	});
 });
