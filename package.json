@@ -1,6 +1,6 @@
 {
   "name": "finnlp",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Natrual language processing in JavaScript",
   "main": "./dist/index.js",
   "types":"./dist/index.d.ts",
