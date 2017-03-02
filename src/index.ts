@@ -4,8 +4,6 @@ import parser = require('en-parse');
 
 import {ResultNode as DepNode} from "en-parse/dist/index";
 
-//import {WholeResult as _Lexer} from "lexed/dist/index";
-
 // initialize english built-in extension
 lexed.extend.english();
 
@@ -97,11 +95,13 @@ export namespace Fin {
 	// interceptor functions array
 	export const interceptors:Array<Interceptor> = [];
 	export const detectors:Array<Detector> = [];
-	export function addDetector(detector:Detector){
-		detectors.push(detector);
+	export function addDetector(detector:Detector|Detector[]){
+		if(!Array.isArray(detector)) detector = [detector];
+		detectors.unshift.apply(this,detector);
 	}
-	export function addInterceptor(interceptor:Interceptor){
-		interceptors.push(interceptor);
+	export function addInterceptor(interceptor:Interceptor|Interceptor[]){
+		if(!Array.isArray(interceptor)) interceptor = [interceptor];
+		interceptors.unshift.apply(interceptor);
 	}
 
 	/**
