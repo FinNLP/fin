@@ -11,7 +11,4 @@ Thumbs.dbma
 # Node.js Files #
 ######################
 /node_modules/*
-*.log
-.jshintrc
-diagnosis*
-more_diagnosis*
+/dist/*
