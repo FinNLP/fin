@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/finnlp/fin",
   "dependencies": {
-    "en-parse": "^1.0.2",
-    "en-pos": "^1.0.5",
-    "lexed": "^1.0.2"
+    "en-parse": "^1.0.9",
+    "en-pos": "^1.0.8",
+    "lexed": "^1.0.9"
   }
 }
