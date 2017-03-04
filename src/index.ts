@@ -15,7 +15,7 @@ export namespace Fin {
 	 * Main function
 	 * ------------------------------------
 	**/
-	export function Fin (input:string):FinReturn{
+	export function run (input:string):FinReturn{
 
 		let result:FinReturn = {
 			raw:"",
@@ -134,3 +134,5 @@ export namespace Fin {
 		depsTree:TreeInterface[];
 	}
 }
+
+export default Fin;
