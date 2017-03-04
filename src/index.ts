@@ -3,6 +3,7 @@ import tagger = require('en-pos');
 import parser = require('en-parse');
 
 import {ResultNode as DepNode} from "en-parse/dist/index";
+import {NodeInterface as TreeInterface} from "en-parse/dist/index";
 
 // initialize english built-in extension
 lexed.extend.english();
@@ -22,6 +23,7 @@ export namespace Fin {
 			tokens:[[]],
 			tags:[[]],
 			deps:[[]],
+			depsTree:[],
 			confidennce:[],
 			sentences:[]
 		};
@@ -72,7 +74,8 @@ export namespace Fin {
 		for (var index = 0; index < result.tokens.length; index++) {
 			const tokens = result.tokens[index];
 			const tags = result.tags[index];
-			result.deps[index] = parser.parse(tags,tokens);
+			result.depsTree[index] = parser.parse(tags,tokens);
+			result.deps[index] = parser.toArray(result.depsTree[index]);
 		}
 
 		/**
@@ -128,5 +131,6 @@ export namespace Fin {
 		tags:string[][];
 		confidennce:number[];
 		deps:DepNode[][];
+		depsTree:TreeInterface[];
 	}
 }
