@@ -3,7 +3,7 @@
   "version": "1.0.9",
   "description": "Natrual language processing in JavaScript",
   "main": "./dist/index.js",
-  "types":"./dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/finnlp/fin",
   "dependencies": {
-    "en-parse": "^1.0.9",
-    "en-pos": "^1.0.8",
+    "en-parse": "^1.0.10",
+    "en-pos": "^1.0.10",
     "lexed": "^1.0.9"
   }
 }
