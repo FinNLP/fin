@@ -100,11 +100,11 @@ export namespace Fin {
 	export const detectors:Array<Detector> = [];
 	export function addDetector(detector:Detector|Detector[]){
 		if(!Array.isArray(detector)) detector = [detector];
-		detectors.unshift.apply(this,detector);
+		detectors.unshift.apply(detectors,detector);
 	}
 	export function addInterceptor(interceptor:Interceptor|Interceptor[]){
 		if(!Array.isArray(interceptor)) interceptor = [interceptor];
-		interceptors.unshift.apply(interceptor);
+		interceptors.unshift.apply(interceptors,interceptor);
 	}
 
 	/**
