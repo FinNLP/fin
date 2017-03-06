@@ -63,7 +63,6 @@ export namespace Fin {
 			result.tags[index] = taggingInstance.tags;
 			result.confidence[index] = taggingInstance.confidence.reduce((a,b)=>a+b,0) / taggingInstance.confidence.length;
 			// but we can never be so sure about the dependency parsing :'(
-			result.confidennce[index] = result.confidennce[index] - (((100 - result.confidennce[index]) * 0.5) || 10);
 			result.confidence[index] = result.confidence[index] - 10;
 		}
 
