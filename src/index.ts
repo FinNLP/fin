@@ -1,9 +1,13 @@
 import lexed = require('lexed');
 import tagger = require('en-pos');
 import parser = require('en-parse');
+import {extend as extendLexicon} from "en-lexicon";
+
 
 import {ResultNode as DepNode} from "en-parse/dist/index";
 import {NodeInterface as TreeInterface} from "en-parse/dist/index";
+import {Extension as LexedTransformer} from "lexed";
+import {LexiconType as LexiconExtension} from "en-lexicon/dist/lexicon";
 
 // initialize english built-in extension
 lexed.extend.english();
@@ -106,11 +110,29 @@ export namespace Fin {
 		if(!Array.isArray(interceptor)) interceptor = [interceptor];
 		interceptors.unshift.apply(interceptors,interceptor);
 	}
+	export function extend(extensions:Extensions){
+		extensions.forEach((extension)=>{
+			if(extension.type === "detector")
+				addDetector(extension.extension);
+			else if(extension.type === "interceptor")
+				addInterceptor(extension.extension);
+			else if(extension.type === "lexicon")
+				extendLexicon(extension.extension);
+			else if(extension.type === "lexer-abbreviations")
+				lexed.extend.abbreviations(extension.extension);
+			else if(extension.type === "lexer-transformer")
+				lexed.extend.transformers(extension.extension);
+			else {
+				console.warn("FIN WARNING: invalid extension");
+				console.warn(extensions);
+			}
+		});
+	}
 
 	/**
-	 * 
+	 * ------------------------------------
 	 * Interfaces
-	 * 
+	 * ------------------------------------
 	**/
 	export interface Interceptor {
 		(input:string):string;
@@ -118,6 +140,34 @@ export namespace Fin {
 	export interface Detector {
 		(input:FinReturn):FinReturn;
 	}
+	export interface ExtensionDetector {
+		type:"detector";
+		extension:Detector;
+	}
+	export interface ExtensionInterceptor {
+		type:"interceptor";
+		extension:Interceptor;
+	}
+	export interface ExtensionAbbreviations {
+		type:"lexer-abbreviations";
+		extension:string[];
+	}
+	export interface ExtensionTransformer {
+		type:"lexer-transformer";
+		extension:LexedTransformer;
+	}
+	export interface ExtensionLexicon {
+		type:"lexicon";
+		extension:LexiconExtension;
+	}
+	export type Extensions = Array <
+		ExtensionDetector|
+		ExtensionInterceptor|
+		ExtensionAbbreviations|
+		ExtensionTransformer|
+		ExtensionLexicon
+	>;
+
 	export interface FinReturn {
 		// input strings
 		// raw
