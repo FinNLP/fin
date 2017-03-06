@@ -24,7 +24,7 @@ export namespace Fin {
 			tags:[[]],
 			deps:[[]],
 			depsTree:[],
-			confidennce:[],
+			confidence:[],
 			sentences:[]
 		};
 		result.raw = input;
@@ -61,9 +61,10 @@ export namespace Fin {
 			taggingInstance.initial();
 			taggingInstance.smooth();
 			result.tags[index] = taggingInstance.tags;
-			result.confidennce[index] = taggingInstance.confidence.reduce((a,b)=>a+b,0) / taggingInstance.confidence.length;
+			result.confidence[index] = taggingInstance.confidence.reduce((a,b)=>a+b,0) / taggingInstance.confidence.length;
 			// but we can never be so sure about the dependency parsing :'(
 			result.confidennce[index] = result.confidennce[index] - (((100 - result.confidennce[index]) * 0.5) || 10);
+			result.confidence[index] = result.confidence[index] - 10;
 		}
 
 		/**
@@ -129,7 +130,7 @@ export namespace Fin {
 		tokens:string[][];
 		sentences:string[];
 		tags:string[][];
-		confidennce:number[];
+		confidence:number[];
 		deps:DepNode[][];
 		depsTree:TreeInterface[];
 	}
