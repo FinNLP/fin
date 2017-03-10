@@ -2,15 +2,11 @@ import lexed = require('lexed');
 import tagger = require('en-pos');
 import parser = require('en-parse');
 import {extend as extendLexicon} from "en-lexicon";
-
+import {abbreviations} from "lexed";
 
 import {ResultNode as DepNode} from "en-parse/dist/index";
 import {NodeInterface as TreeInterface} from "en-parse/dist/index";
-import {Extension as LexedTransformer} from "lexed";
 import {LexiconType as LexiconExtension} from "en-lexicon/dist/lexicon";
-
-// initialize english built-in extension
-lexed.extend.english();
 
 export namespace Fin {
 
@@ -50,9 +46,8 @@ export namespace Fin {
 		**/
 		const _lexer = new lexed.Lexed(result.intercepted).lexer();
 		result.sentences = _lexer.sentences;
-		result.tokens = _lexer.tokens.map((r)=>r.tokens);
-		const _meta = _lexer.tokens.map((r)=>r.meta);
-		
+		result.tokens = _lexer.tokens;
+
 		/**
 		 * ----------------
 		 * 3: POS tagging
@@ -60,8 +55,7 @@ export namespace Fin {
 		**/
 		for (var index = 0; index < result.tokens.length; index++) {
 			const tokens = result.tokens[index];
-			const meta = _meta[index];
-			const taggingInstance = new tagger.Tag(tokens,meta);
+			const taggingInstance = new tagger.Tag(tokens);
 			taggingInstance.initial();
 			taggingInstance.smooth();
 			result.tags[index] = taggingInstance.tags;
@@ -78,7 +72,7 @@ export namespace Fin {
 		for (var index = 0; index < result.tokens.length; index++) {
 			const tokens = result.tokens[index];
 			const tags = result.tags[index];
-			result.depsTree[index] = parser.parse(tags,tokens);
+			result.depsTree[index] = parser.tree(tags,tokens)[0];
 			result.deps[index] = parser.toArray(result.depsTree[index]);
 		}
 
@@ -118,10 +112,9 @@ export namespace Fin {
 				addInterceptor(extension.extension);
 			else if(extension.type === "lexicon")
 				extendLexicon(extension.extension);
-			else if(extension.type === "lexer-abbreviations")
-				lexed.extend.abbreviations(extension.extension);
-			else if(extension.type === "lexer-transformer")
-				lexed.extend.transformers(extension.extension);
+			else if(extension.type === "abbreviations") {
+				abbreviations.push.apply(extension.extension);
+			}
 			else {
 				console.warn("FIN WARNING: invalid extension");
 				console.warn(extensions);
@@ -149,12 +142,8 @@ export namespace Fin {
 		extension:Interceptor;
 	}
 	export interface ExtensionAbbreviations {
-		type:"lexer-abbreviations";
+		type:"abbreviations";
 		extension:string[];
-	}
-	export interface ExtensionTransformer {
-		type:"lexer-transformer";
-		extension:LexedTransformer;
 	}
 	export interface ExtensionLexicon {
 		type:"lexicon";
@@ -164,7 +153,6 @@ export namespace Fin {
 		ExtensionDetector|
 		ExtensionInterceptor|
 		ExtensionAbbreviations|
-		ExtensionTransformer|
 		ExtensionLexicon
 	>;
 
@@ -174,7 +162,6 @@ export namespace Fin {
 		raw:string;
 		// intercepted
 		intercepted:string;
-
 		// public (results)
 		tokens:string[][];
 		sentences:string[];
