@@ -49,7 +49,11 @@ export class Run {
 		for (var index = 0; index < postProcessors.length; index++) {
 			result = postProcessors[index](result);
 		}
-		return result;
+		this.raw = result.raw;
+		this.intercepted = result.intercepted;
+		this.sentences = result.sentences;
+
+		return this;
 	}
 }
 
