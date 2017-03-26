@@ -3,23 +3,15 @@ import tagger = require('en-pos');
 import parser = require('en-parse');
 import {extend as extendLexicon} from "en-lexicon";
 import {abbreviations} from "lexed";
-
 import {ResultNode as DepNode} from "en-parse/dist/index";
 import {NodeInterface as TreeInterface} from "en-parse/dist/index";
 import {LexiconType as LexiconExtension} from "en-lexicon/dist/lexicon";
 
 export class Run {
 
-	public raw:string;
-	public intercepted:string;
-	public sentences:{
-		sentence:string;
-		tokens:string[];
-		tags:string[];
-		deps:DepNode[];
-		depsTree:TreeInterface;
-		confidence:number;
-	}[];
+	public raw:string = "";
+	public intercepted:string = "";
+	public sentences:SentenceResult[] = [];
 	constructor(input:string){
 		this.raw = input;
 
@@ -37,10 +29,18 @@ export class Run {
 		**/
 		const _lexer = new lexed.Lexed(this.intercepted).lexer();
 		for (var index = 0; index < _lexer.sentences.length; index++) {
+			this.sentences[index] = {
+				sentence:"",
+				confidence:0,
+				deps:[],
+				tags:[],
+				depsTree:<TreeInterface>{},
+				tokens:[]
+			};
 			this.sentences[index].sentence = _lexer.sentences[index];
 			this.sentences[index].tokens = _lexer.tokens[index];
 			const taggingInstance = new tagger.Tag(this.sentences[index].tokens).initial().smooth();
-			this.sentences[index].tokens = taggingInstance.tokens;
+			this.sentences[index].tags = taggingInstance.tags;
 			this.sentences[index].confidence = (taggingInstance.confidence.reduce((a,b)=>a+b,0) / taggingInstance.confidence.length) - 10;
 			this.sentences[index].depsTree = parser.tree(this.sentences[index].tags,this.sentences[index].tokens)[0];
 			this.sentences[index].deps = parser.toArray(this.sentences[index].depsTree);
@@ -48,6 +48,15 @@ export class Run {
 		return this;
 	}
 }
+
+export interface SentenceResult {
+	sentence:string;
+	tokens:string[];
+	tags:string[];
+	deps:DepNode[];
+	depsTree:TreeInterface;
+	confidence:number;
+};
 
 /**
  * Extensions directory
@@ -59,11 +68,17 @@ export function addInterceptor(interceptor:Interceptor|Interceptor[]){
 	interceptors.unshift.apply(interceptors,interceptor);
 }
 export function extend(extensions:Extensions){
+	
+	if(!Array.isArray(extensions)) extensions = [extensions];
+
 	extensions.forEach((extension)=>{
+		// you may extend the interceptors
 		if(extension.type === "interceptor")
 			addInterceptor(extension.extension);
+		// or you extend the lexicon
 		else if(extension.type === "lexicon")
 			extendLexicon(extension.extension);
+		// or you extend the abbreviations
 		else if(extension.type === "abbreviations") {
 			abbreviations.push.apply(extension.extension);
 		}
