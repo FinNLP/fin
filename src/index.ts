@@ -1,11 +1,8 @@
 import lexed = require('lexed');
 import tagger = require('en-pos');
 import parser = require('en-parse');
-import {extend as extendLexicon} from "en-lexicon";
-import {abbreviations} from "lexed";
 import {ResultNode as DepNode} from "en-parse/dist/index";
 import {NodeInterface as TreeInterface} from "en-parse/dist/index";
-import {LexiconType as LexiconExtension} from "en-lexicon/dist/lexicon";
 
 export class Run {
 
@@ -14,16 +11,14 @@ export class Run {
 	public sentences:SentenceResult[] = [];
 	constructor(input:string){
 		this.raw = input;
-
 		/**
 		 * 1: Intercepting inputs
 		**/
 		this.intercepted = input;
-		for (var index = 0; index < interceptors.length; index++) {
-			var interceptor = interceptors[index];
+		for (var index = 0; index < preProcessors.length; index++) {
+			var interceptor = preProcessors[index];
 			this.intercepted = interceptor(this.intercepted);
 		}
-
 		/**
 		 * 2: Do the magic
 		**/
@@ -45,7 +40,16 @@ export class Run {
 			this.sentences[index].depsTree = parser.tree(this.sentences[index].tags,this.sentences[index].tokens)[0];
 			this.sentences[index].deps = parser.toArray(this.sentences[index].depsTree);
 		}
-		return this;
+		// post processing interceptors
+		let result = {
+			raw:this.raw,
+			intercepted:this.intercepted,
+			sentences:this.sentences
+		};
+		for (var index = 0; index < postProcessors.length; index++) {
+			result = postProcessors[index](result);
+		}
+		return result;
 	}
 }
 
@@ -62,51 +66,13 @@ export interface SentenceResult {
  * Extensions directory
 **/
 // interceptor functions array
-export const interceptors:Array<Interceptor> = [];
-export function addInterceptor(interceptor:Interceptor|Interceptor[]){
-	if(!Array.isArray(interceptor)) interceptor = [interceptor];
-	interceptors.unshift.apply(interceptors,interceptor);
-}
-export function extend(extensions:Extensions){
-	
-	if(!Array.isArray(extensions)) extensions = [extensions];
-
-	extensions.forEach((extension)=>{
-		// you may extend the interceptors
-		if(extension.type === "interceptor")
-			addInterceptor(extension.extension);
-		// or you extend the lexicon
-		else if(extension.type === "lexicon")
-			extendLexicon(extension.extension);
-		// or you extend the abbreviations
-		else if(extension.type === "abbreviations") {
-			abbreviations.push.apply(extension.extension);
-		}
-		else {
-			console.warn("FIN WARNING: invalid extension");
-			console.warn(extensions);
-		}
-	});
-}
+export const preProcessors:Array<PreProcessor> = [];
+export const postProcessors:Array<PostProcessor> = [];
 
 
-export interface Interceptor {
+export interface PreProcessor {
 	(input:string):string;
 }
-export interface ExtensionInterceptor {
-	type:"interceptor";
-	extension:Interceptor;
+export interface PostProcessor {
+	(input:Run):Run;
 }
-export interface ExtensionAbbreviations {
-	type:"abbreviations";
-	extension:string[];
-}
-export interface ExtensionLexicon {
-	type:"lexicon";
-	extension:LexiconExtension;
-}
-export type Extensions = Array <
-	ExtensionInterceptor|
-	ExtensionAbbreviations|
-	ExtensionLexicon
->;
