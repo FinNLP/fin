@@ -1,6 +1,6 @@
 {
   "name": "finnlp",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Natural language processing in JavaScript",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/finnlp/fin",
   "dependencies": {
     "en-norm": "0.0.2",
-    "en-parse": "^1.0.13",
+    "en-parse": "^1.1.0",
     "en-pos": "^1.0.13",
     "lemmatizer": "0.0.1",
     "lexed": "^1.0.10"
