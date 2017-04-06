@@ -3,6 +3,8 @@ import tagger = require('en-pos');
 import parser = require('en-parse');
 import {ResultNode as DepNode} from "en-parse/dist/index";
 import {NodeInterface as TreeInterface} from "en-parse/dist/index";
+import {normalizeCaps,replaceConfusables,resolveContractions} from "en-norm";
+import {lemmatizer} from "lemmatizer";
 
 export class Run {
 
@@ -11,10 +13,11 @@ export class Run {
 	public sentences:SentenceResult[] = [];
 	constructor(input:string){
 		this.raw = input;
+
 		/**
 		 * 1: Intercepting inputs
 		**/
-		this.intercepted = input;
+		this.intercepted = resolveContractions(replaceConfusables(input));
 		for (var index = 0; index < preProcessors.length; index++) {
 			var interceptor = preProcessors[index];
 			this.intercepted = interceptor(this.intercepted);
@@ -30,10 +33,12 @@ export class Run {
 				deps:[],
 				tags:[],
 				depsTree:<TreeInterface>{},
-				tokens:[]
+				tokens:[],
+				lemmas:[]
 			};
 			this.sentences[index].sentence = _lexer.sentences[index];
-			this.sentences[index].tokens = _lexer.tokens[index];
+			this.sentences[index].tokens = normalizeCaps(_lexer.tokens[index]);
+			this.sentences[index].lemmas = this.sentences[index].tokens.map(lemmatizer);
 			const taggingInstance = new tagger.Tag(this.sentences[index].tokens).initial().smooth();
 			this.sentences[index].tags = taggingInstance.tags;
 			this.sentences[index].confidence = (taggingInstance.confidence.reduce((a,b)=>a+b,0) / taggingInstance.confidence.length) - 10;
@@ -60,6 +65,7 @@ export class Run {
 export interface SentenceResult {
 	sentence:string;
 	tokens:string[];
+	lemmas:string[];
 	tags:string[];
 	deps:DepNode[];
 	depsTree:TreeInterface;
