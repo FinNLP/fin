@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "name": "Ashley Ford",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/ashleyford/128.jpg"
+    },
+    {
+        "id": 2,
+        "name": "Remy Sharp",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/rem/128.jpg"
+    },
+    {
+        "id": 1,
+        "name": "Harry Roberts",
+        "avatar": "https://s3.amazonaws.com/uifaces/faces/twitter/csswizardry/128.jpg"
+    }
+]
