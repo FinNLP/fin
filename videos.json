@@ -1,3 +1,56 @@
-{
-  "a": 5
-}
+[
+    {
+        "title": "HTTP203 Recap",
+        "user_id": 1,
+        "url": "https://www.youtube.com/watch?v=k2DRz0KIZAU",
+        "promoted": true
+    },
+    {
+        "title": "Jake Beats Wikipedia - HTTP203",
+        "user_id": 2,
+        "url": "https://www.youtube.com/watch?v=Bt2vFmjUELc",
+        "promoted": false
+    },
+    {
+        "title": "Polygit. The Polymer CDN! -- Polycasts #45",
+        "user_id": 1,
+        "url": "https://www.youtube.com/watch?v=vyph_r8wUpc",
+        "promoted": false
+    },
+    {
+        "title": "Supercharged Q&A: May 2016",
+        "user_id": 3,
+        "url": "https://www.youtube.com/watch?v=V-s2QLZvc50",
+        "promoted": false
+    },
+    {
+        "title": "Web Performance Tooling - Google I/O 2016",
+        "user_id": 2,
+        "url": "https://www.youtube.com/watch?v=iMqi55rcR00",
+        "promoted": true
+    },
+    {
+        "title": "Chrome Dev Summit 2016 Highlights",
+        "user_id": 3,
+        "url": "https://www.youtube.com/watch?v=tI2QCxbpsuI",
+        "promoted": false
+    },
+    {
+        "title": "Season 3 Trailer, Totally Tooling Tips",
+        "user_id": 3,
+        "url": "https://www.youtube.com/watch?v=LbphSMNFtlg",
+        "promoted": true
+    },
+    {
+        "title": "Progressive Web Apps: Great Experiences Everywhere (Google I/O '17)",
+        "user_id": 1,
+        "url": "https://www.youtube.com/watch?v=m-sCdS0sQO8",
+        "promoted": true
+    },
+    {
+        "title": "The Mobile Web: State of the Union - Google I/O 2016",
+        "user_id": 1,
+        "url": "https://www.youtube.com/watch?v=0SSI8liELJU",
+        "promoted": true
+    }
+]
