@@ -14,5 +14,5 @@ This project, by no means, should be considered as an alternative to the establi
 
 ## Getting Started
 
-- [Demo](http://demo.fin.run)
+- [Demo](http://finnlp.surge.sh)
 - [Documentation](https://finnlp.gitbook.io/fin/)
