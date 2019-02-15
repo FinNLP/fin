@@ -15,4 +15,4 @@ This project, by no means, should be considered as an alternative to the establi
 ## Getting Started
 
 - [Demo](http://demo.fin.run)
-- [Documentation](http://docs.fin.run)
+- [Documentation](https://finnlp.gitbook.io/fin/)
